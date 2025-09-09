@@ -1,0 +1,66 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Unidad 3 – Casos de Uso e Interactores (Clean Architecture + Spring Data JPA)
+
+package "Domain" {
+  class Producto {
+    - id : String
+    - nombre : String
+    - precio : double
+    --
+    + Producto(id:String, nombre:String, precio:double)
+    + aplicarDescuento(porcentaje:double) : void
+    + getId() : String
+    + getNombre() : String
+    + getPrecio() : double
+  }
+
+  interface ProductoRepository {
+    + buscarPorId(id:String) : java.util.Optional<Producto>
+    + guardar(producto:Producto) : Producto
+  }
+
+  note right of Producto
+    Reglas de negocio críticas.
+    Sin dependencias de frameworks.
+  end note
+}
+
+package "Application" {
+  package "ports.in" {
+    interface AplicarDescuentoUseCase {
+      + ejecutar(input:AplicarDescuentoInput) : AplicarDescuentoOutput
+    }
+  }
+
+  package "dtos" {
+    class AplicarDescuentoInput {
+      + idProducto : String
+      + porcentaje : double
+    }
+
+    class AplicarDescuentoOutput {
+      + idProducto : String
+      + precioFinal : double
+      --
+      + AplicarDescuentoOutput(idProducto:String, precioFinal:double)
+    }
+  }
+
+  package "services" {
+    class AplicarDescuentoInteractor {
+      - repository : ProductoRepository
+      --
+      + AplicarDescuentoInteractor(repository:ProductoRepository)
+      + ejecutar(input:AplicarDescuentoInput) : AplicarDescuentoOutput
+    }
+  }
+
+  AplicarDescuentoInteractor ..|> AplicarDescuentoUseCase
+  AplicarDescuentoInteractor --> ProductoRepository : usa
+  AplicarDescuentoInteractor ..> Producto : orquesta comportamiento
+}
+
+
+@enduml
