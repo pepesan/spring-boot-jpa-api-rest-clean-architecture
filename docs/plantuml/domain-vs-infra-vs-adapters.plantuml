@@ -1,0 +1,145 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Unidad 4 – Interfaces y Adaptadores \n(relación con capas anteriores)
+
+' ===================== DOMINIO (Unidad 2/3) =====================
+package "Dominio" {
+  class Producto {
+    - id : String
+    - nombre : String
+    - precio : double
+    --
+    + aplicarDescuento(porcentaje:double) : void
+    + getId() : String
+  }
+
+  interface ProductoRepository {
+    + buscarPorId(id:String) : java.util.Optional<Producto>
+    + guardar(producto:Producto) : Producto
+  }
+
+  note right of Producto
+    Reglas de negocio críticas.
+    Sin dependencias de frameworks.
+  end note
+}
+
+' ===================== APLICACIÓN (Unidad 3) =====================
+package "Aplicación" {
+  package "port.in" {
+    interface AplicarDescuentoUseCase {
+      + ejecutar(input:AplicarDescuentoInput) : AplicarDescuentoOutput
+    }
+  }
+
+  package "port.out" {
+    interface CatalogoExternoPort {
+      + obtenerPrecioRecomendado(sku:String) : java.util.Optional<Double>
+    }
+  }
+
+  package "dto" {
+    class AplicarDescuentoInput {
+      + idProducto : String
+      + porcentaje : double
+    }
+    class AplicarDescuentoOutput {
+      + idProducto : String
+      + precioFinal : double
+    }
+  }
+
+  package "service" {
+    class AplicarDescuentoInteractor {
+      - repo : ProductoRepository
+      - catalogo : CatalogoExternoPort
+      --
+      + AplicarDescuentoInteractor(repo:ProductoRepository, catalogo:CatalogoExternoPort)
+      + ejecutar(input:AplicarDescuentoInput) : AplicarDescuentoOutput
+    }
+  }
+
+  AplicarDescuentoInteractor ..|> AplicarDescuentoUseCase
+  AplicarDescuentoInteractor --> ProductoRepository : usa (port out dominio)
+  AplicarDescuentoInteractor --> CatalogoExternoPort : usa (port out aplicación)
+  AplicarDescuentoInteractor ..> Producto : orquesta comportamiento
+}
+
+' ===================== INFRAESTRUCTURA – ADAPTADORES (Unidad 4) =====================
+package "Infraestructura / Adaptadores" {
+  ' ---- Adaptador de Entrada (Controller) ----
+  class ProductoController <<REST Adapter>> {
+    - useCase : AplicarDescuentoUseCase
+    --
+    + aplicarDescuento(req) : HttpResponse
+  }
+  ProductoController --> AplicarDescuentoUseCase : invoca (port.in)
+
+  note right of ProductoController
+    Traduce HTTP ↔ DTOs del caso de uso.
+    Sin lógica de negocio.
+  end note
+
+  ' ---- Adaptador de Repositorio (JPA) ----
+  package "Persistencia (JPA)" {
+    class ProductoEntity <<JPA Entity>> {
+      + id : String
+      + nombre : String
+      + precio : double
+      --
+      + ProductoEntity()
+    }
+
+    interface SpringDataProductoRepository <<JpaRepository>> {
+      + save(e:ProductoEntity) : ProductoEntity
+      + findById(id:String) : java.util.Optional<ProductoEntity>
+    }
+
+    class ProductoRepositoryAdapter <<Adapter>> {
+      - jpaRepo : SpringDataProductoRepository
+      --
+      + ProductoRepositoryAdapter(jpaRepo:SpringDataProductoRepository)
+      + buscarPorId(id:String) : java.util.Optional<Producto>
+      + guardar(producto:Producto) : Producto
+    }
+
+    class ProductoMapper <<Mapper>> {
+      + toEntity(p:Producto) : ProductoEntity
+      + toDomain(e:ProductoEntity) : Producto
+    }
+
+    ProductoRepositoryAdapter ..|> ProductoRepository
+    ProductoRepositoryAdapter --> SpringDataProductoRepository : usa
+    ProductoRepositoryAdapter ..> ProductoMapper : usa
+    SpringDataProductoRepository ..> ProductoEntity : gestiona
+    ProductoMapper ..> Producto
+    ProductoMapper ..> ProductoEntity
+  }
+
+  ' ---- Gateway externo (HTTP, gRPC, etc.) ----
+  package "Integración Externa" {
+    class CatalogoExternoGateway <<Gateway>> {
+      - http : WebClient
+      --
+      + CatalogoExternoGateway(http:WebClient)
+      + obtenerPrecioRecomendado(sku:String) : java.util.Optional<Double>
+    }
+
+    CatalogoExternoGateway ..|> CatalogoExternoPort
+    note right of CatalogoExternoGateway
+      Anti-corruption layer:
+      mapea modelos/errores externos
+      a tipos internos.
+    end note
+  }
+}
+
+' ===================== RELACIONES TRANSVERSALES =====================
+ProductoController -down-> AplicarDescuentoUseCase : depende de interfaz
+AplicarDescuentoUseCase -down-> AplicarDescuentoInteractor : implementación (en tiempo de wiring)
+
+' Visual de dependencias entre capas (no navegables)
+' (Controller) -> (UseCase) -> (Ports out) -> (Adapters)
+' (Interactor) -> Dominio (Producto/ProductoRepository)
+@enduml
