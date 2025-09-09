@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ProductoRepositoryImpl implements ProductoRepository {
+public class ProductoRepositoryAdapter implements ProductoRepository {
 
     private SpringDataProductoRepository jpaRepository;
 
     @Autowired
-    public ProductoRepositoryImpl(SpringDataProductoRepository jpaRepository) {
+    public ProductoRepositoryAdapter(SpringDataProductoRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 
     @Override
-    public Optional<Producto> buscarPorId(String id) {
+    public Optional<Producto> findById(String id) {
         return jpaRepository.findById(id)
                 .map(ProductoMapper::toDomain);
     }

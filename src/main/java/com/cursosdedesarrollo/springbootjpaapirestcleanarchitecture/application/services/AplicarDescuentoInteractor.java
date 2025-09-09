@@ -19,7 +19,7 @@ public class AplicarDescuentoInteractor implements AplicarDescuentoUseCase {
     }
 
     public AplicarDescuentoOutput ejecutar(AplicarDescuentoInput input) {
-        Producto producto = repository.buscarPorId(input.idProducto)
+        Producto producto = repository.findById(input.idProducto)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
 
         producto.aplicarDescuento(input.porcentaje);
