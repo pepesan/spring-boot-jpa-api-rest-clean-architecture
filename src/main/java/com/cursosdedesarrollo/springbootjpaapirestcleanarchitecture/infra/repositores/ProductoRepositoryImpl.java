@@ -7,6 +7,7 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.mapper
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -30,5 +31,13 @@ public class ProductoRepositoryImpl implements ProductoRepository {
         ProductoEntity entity = ProductoMapper.toEntity(producto);
         ProductoEntity saved = jpaRepository.save(entity);
         return ProductoMapper.toDomain(saved);
+    }
+
+    @Override
+    public List<Producto> findAll() {
+        return jpaRepository.findAll()
+                .stream()
+                .map(ProductoMapper::toDomain)
+                .toList();
     }
 }

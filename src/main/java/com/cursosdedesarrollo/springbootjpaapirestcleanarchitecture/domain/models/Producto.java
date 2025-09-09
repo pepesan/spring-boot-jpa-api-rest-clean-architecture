@@ -6,9 +6,9 @@ public class Producto {
     private double precio;
 
     public Producto(String id, String nombre, double precio) {
-        if (precio <= 0) {
-            throw new IllegalArgumentException("El precio debe ser mayor que 0");
-        }
+        if (id == null || id.isBlank()) throw new IllegalArgumentException("id requerido");
+        if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("nombre requerido");
+        if (precio <= 0) throw new IllegalArgumentException("precio debe ser > 0");
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
