@@ -1,0 +1,90 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Clean Architecture con Spring Boot + Spring Data JPA (Entidades y Persistencia)
+
+package "Domain" {
+  class Producto {
+    - id : String
+    - nombre : String
+    - precio : double
+    --
+    + Producto(id:String, nombre:String, precio:double)
+    + aplicarDescuento(porcentaje:double) : void
+    + getId() : String
+    + getNombre() : String
+    + getPrecio() : double
+  }
+
+  interface ProductoRepository {
+    + buscarPorId(id:String) : java.util.Optional<Producto>
+    + guardar(producto:Producto) : Producto
+  }
+
+  note right of Producto
+    Entidad de dominio pura.
+    Sin dependencias de JPA / Spring.
+    Contiene reglas de negocio críticas.
+  end note
+}
+
+package "Appplication" {
+  class AplicarDescuentoUseCase {
+    - repository : ProductoRepository
+    --
+    + AplicarDescuentoUseCase(repository:ProductoRepository)
+    + ejecutar(idProducto:String, porcentaje:double) : void
+  }
+
+  AplicarDescuentoUseCase --> ProductoRepository : usa
+}
+
+package "Infra" {
+  class ProductoEntity <<JPA Entity>> {
+    + id : String
+    + nombre : String
+    + precio : double
+    --
+    + ProductoEntity()
+    + ProductoEntity(id:String, nombre:String, precio:double)
+  }
+
+  interface SpringDataProductoRepository <<JpaRepository>> {
+    + save(e:ProductoEntity) : ProductoEntity
+    + findById(id:String) : java.util.Optional<ProductoEntity>
+  }
+
+  class ProductoRepositoryImpl <<Repository>> {
+    - jpaRepository : SpringDataProductoRepository
+    --
+    + ProductoRepositoryImpl(jpaRepository:SpringDataProductoRepository)
+    + buscarPorId(id:String) : java.util.Optional<Producto>
+    + guardar(producto:Producto) : Producto
+  }
+
+  class ProductoMapper <<Mapper>> {
+    + toEntity(p:Producto) : ProductoEntity
+    + toDomain(e:ProductoEntity) : Producto
+  }
+
+  note right of ProductoEntity
+    @Entity
+    @Table(name="productos")
+    Sin lógica de dominio.
+  end note
+}
+
+' Relaciones entre capas
+ProductoRepositoryImpl ..|> ProductoRepository
+ProductoRepositoryImpl --> SpringDataProductoRepository : usa
+ProductoRepositoryImpl ..> ProductoMapper : usa
+
+ProductoMapper ..> Producto
+ProductoMapper ..> ProductoEntity
+
+SpringDataProductoRepository ..> ProductoEntity : gestiona
+
+' Dependencias de aplicación -> dominio
+AplicarDescuentoUseCase ..> Producto : orquesta comportamiento
+
+@enduml
