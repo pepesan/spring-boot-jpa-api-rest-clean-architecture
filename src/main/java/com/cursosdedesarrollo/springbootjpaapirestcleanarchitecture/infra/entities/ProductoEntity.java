@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class ProductoEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nombre;
 
@@ -16,17 +17,17 @@ public class ProductoEntity {
     // Constructor vacío para JPA
     protected ProductoEntity() {}
 
-    public ProductoEntity(String id, String nombre, double precio) {
+    public ProductoEntity(Long id, String nombre, double precio) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

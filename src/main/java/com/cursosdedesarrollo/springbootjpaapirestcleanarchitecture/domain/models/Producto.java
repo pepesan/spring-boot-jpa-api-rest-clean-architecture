@@ -1,12 +1,15 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models;
 
 public class Producto {
-    private final String id;
+    private Long id;
     private String nombre;
     private double precio;
 
-    public Producto(String id, String nombre, double precio) {
-        if (id == null || id.isBlank()) throw new IllegalArgumentException("id requerido");
+    public Producto() {}
+
+    public Producto(Long id, String nombre, double precio) {
+        if (id == null || id <= 0)
+            throw new IllegalArgumentException("El id debe existir y ser mayor que 0");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("nombre requerido");
         if (precio <= 0) throw new IllegalArgumentException("precio debe ser > 0");
         this.id = id;
@@ -21,7 +24,11 @@ public class Producto {
         this.precio -= this.precio * (porcentaje / 100);
     }
 
-    public String getId() {
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public Long getId() {
         return id;
     }
 
