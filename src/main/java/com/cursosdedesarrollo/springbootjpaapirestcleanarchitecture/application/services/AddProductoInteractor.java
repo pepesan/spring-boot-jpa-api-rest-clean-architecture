@@ -5,7 +5,6 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsert;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

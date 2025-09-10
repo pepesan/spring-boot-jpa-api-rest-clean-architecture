@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductoRepository {
-    Optional<Producto> findById(String id);
+    Optional<Producto> findById(Long id);
     Producto guardar(Producto producto);
     List<Producto> findAll();
 }

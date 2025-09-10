@@ -15,7 +15,7 @@ public class ProductoEntity {
     private double precio;
 
     // Constructor vacío para JPA
-    protected ProductoEntity() {}
+    public ProductoEntity() {}
 
     public ProductoEntity(Long id, String nombre, double precio) {
         this.id = id;

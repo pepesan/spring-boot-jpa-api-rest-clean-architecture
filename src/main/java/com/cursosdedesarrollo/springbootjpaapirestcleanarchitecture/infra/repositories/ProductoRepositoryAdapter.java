@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositores;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositories;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;
@@ -21,7 +21,7 @@ public class ProductoRepositoryAdapter implements ProductoRepository {
     }
 
     @Override
-    public Optional<Producto> findById(String id) {
+    public Optional<Producto> findById(Long id) {
         return jpaRepository.findById(id)
                 .map(ProductoMapper::toDomain);
     }

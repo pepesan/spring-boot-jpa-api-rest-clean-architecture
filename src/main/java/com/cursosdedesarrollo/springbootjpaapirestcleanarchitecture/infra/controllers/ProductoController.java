@@ -45,7 +45,7 @@ public class ProductoController {
 
     @PostMapping("/{id}/descuento/{porcentaje}")
     public ResponseEntity<AplicarDescuentoOutput> aplicar(
-            @PathVariable String id,@PathVariable double porcentaje) {
+            @PathVariable Long id,@PathVariable double porcentaje) {
 
         var input = new AplicarDescuentoInput();
         input.idProducto = id;
