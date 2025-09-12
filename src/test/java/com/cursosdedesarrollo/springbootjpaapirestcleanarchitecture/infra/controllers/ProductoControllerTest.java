@@ -30,7 +30,6 @@ class ProductoControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // Sustituimos @MockBean → @MockitoBean
     @MockitoBean
     private AplicarDescuentoUseCase aplicarDescuento;
 
