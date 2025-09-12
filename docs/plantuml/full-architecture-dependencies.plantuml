@@ -1,0 +1,61 @@
+@startuml
+skinparam packageStyle rectangle
+title Clean Architecture - Capas, Frameworks y DIP
+
+package "Frameworks & Drivers\n(Infraestructura externa)" {
+  [Spring Boot] <<framework>>
+  [Spring Data JPA] <<driver>>
+  [REST Controller] <<driver>>
+  [H2 Database] <<driver>>
+  [External API] <<driver>>
+}
+
+package "Adaptadores\n(Interfaces técnicas)" {
+  [ProductoRepositoryAdapter] <<adapter>>
+  [CatalogoExternoGateway] <<adapter>>
+}
+
+package "Aplicación\n(Casos de uso)" {
+  [ListarProductosInteractor] <<use case>>
+  [AplicarDescuentoInteractor] <<use case>>
+
+  interface ProductoRepository
+  interface CatalogoExternoPort
+}
+
+package "Dominio\n(Reglas de negocio)" {
+  [Producto] <<entity>>
+  [Reglas de negocio] <<policy>>
+}
+
+' Relaciones de dependencia (siempre hacia dentro)
+[REST Controller] --> [ListarProductosInteractor]
+[REST Controller] --> [AplicarDescuentoInteractor]
+
+[ProductoRepositoryAdapter] ..|> ProductoRepository
+[ListarProductosInteractor] --> ProductoRepository
+[AplicarDescuentoInteractor] --> ProductoRepository
+
+[CatalogoExternoGateway] ..|> CatalogoExternoPort
+[AplicarDescuentoInteractor] --> CatalogoExternoPort
+
+[ProductoRepositoryAdapter] --> [Spring Data JPA]
+[CatalogoExternoGateway] --> [External API]
+[Spring Data JPA] --> [H2 Database]
+
+' Dominio aislado
+[ListarProductosInteractor] --> [Producto]
+[AplicarDescuentoInteractor] --> [Producto]
+[Producto] --> [Reglas de negocio]
+
+note bottom of "Dominio\n(Reglas de negocio)"
+  El dominio está aislado.
+  No conoce nada de frameworks ni drivers.
+end note
+
+note right of "Aplicación\n(Casos de uso)"
+  Los casos de uso dependen de interfaces (ports).
+  Nunca de detalles de infraestructura.
+end note
+
+@enduml
