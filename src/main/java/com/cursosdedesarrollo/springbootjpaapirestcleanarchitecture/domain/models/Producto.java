@@ -1,5 +1,7 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models;
 
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.validator.ProductoValidator;
+
 public class Producto {
     private Long id;
     private String nombre;
@@ -8,19 +10,14 @@ public class Producto {
     public Producto() {}
 
     public Producto(Long id, String nombre, double precio) {
-        if (id == null || id <= 0)
-            throw new IllegalArgumentException("El id debe existir y ser mayor que 0");
-        if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("nombre requerido");
-        if (precio <= 0) throw new IllegalArgumentException("precio debe ser > 0");
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
+        ProductoValidator.validate(this);
     }
 
     public void aplicarDescuento(double porcentaje) {
-        if (porcentaje <= 0 || porcentaje >= 100) {
-            throw new IllegalArgumentException("Porcentaje inválido");
-        }
+        ProductoValidator.validateDiscount(porcentaje);
         this.precio -= this.precio * (porcentaje / 100);
     }
 
