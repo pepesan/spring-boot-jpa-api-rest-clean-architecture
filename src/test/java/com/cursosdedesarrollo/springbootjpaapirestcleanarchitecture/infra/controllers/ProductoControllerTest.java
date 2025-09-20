@@ -95,7 +95,7 @@ class ProductoControllerTest {
         when(aplicarDescuento.ejecutar(any(AplicarDescuentoInput.class)))
                 .thenReturn(expected);
 
-        mockMvc.perform(post("/productos/5/descuento/25")
+        mockMvc.perform(get("/productos/5/descuento/25")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idProducto", is(5)))

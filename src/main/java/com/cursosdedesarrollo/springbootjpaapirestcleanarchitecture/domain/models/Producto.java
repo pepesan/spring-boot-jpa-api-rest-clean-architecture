@@ -2,7 +2,7 @@ package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.mode
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.validator.ProductoValidator;
 
-public class Producto {
+public  class Producto {
     private Long id;
     private String nombre;
     private double precio;

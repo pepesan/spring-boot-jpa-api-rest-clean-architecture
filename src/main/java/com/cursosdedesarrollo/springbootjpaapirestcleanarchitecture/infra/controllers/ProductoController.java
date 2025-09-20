@@ -43,7 +43,7 @@ public class ProductoController {
         return ResponseEntity.ok(addProducto.add(producto));
     }
 
-    @PostMapping("/{id}/descuento/{porcentaje}")
+    @GetMapping("/{id}/descuento/{porcentaje}")
     public ResponseEntity<AplicarDescuentoOutput> aplicar(
             @PathVariable Long id,@PathVariable double porcentaje) {
 

@@ -83,11 +83,9 @@ class ProductoControllerAcceptanceE2ETest {
         Long id = creado.getId();
 
         // Act: aplicar 25% de descuento
-        ResponseEntity<AplicarDescuentoOutput> respDesc = rest.postForEntity(
-                baseUrl() + "/" + id + "/descuento/{porcentaje}",
-                null,
-                AplicarDescuentoOutput.class,
-                25.0
+        ResponseEntity<AplicarDescuentoOutput> respDesc = rest.getForEntity(
+                baseUrl() + "/" + id + "/descuento/25",
+                AplicarDescuentoOutput.class
         );
 
         // Assert: respuesta del endpoint

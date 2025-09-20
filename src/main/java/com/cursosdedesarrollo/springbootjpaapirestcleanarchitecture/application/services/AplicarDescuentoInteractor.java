@@ -5,15 +5,13 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
+
 public class AplicarDescuentoInteractor implements AplicarDescuentoUseCase {
 
     private final ProductoRepository repository;
 
-    @Autowired
+
     public AplicarDescuentoInteractor(ProductoRepository repository) {
         this.repository = repository;
     }
