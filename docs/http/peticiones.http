@@ -44,14 +44,24 @@ GET http://localhost:8080/productos/1/descuento/10
 
 GET http://localhost:8080/productos/1
 
-
-
 ###
-
 GET http://localhost:8080/cliente
 
 <> 2025-09-15T153034.200.json
 <> 2025-09-15T153027.200.json
+
+###
+
+PUT http://localhost:8080/productos/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombre": "Producto B Modificado",
+  "precio": 80.0
+}
+
+<> 2025-09-22T165335.500.json
 
 ###
 

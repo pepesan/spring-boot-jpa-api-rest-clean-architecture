@@ -29,6 +29,8 @@ public class ApplicationConfig {
     public GetProductoByIdInteractor getProductoByIdInteractor(ProductoRepository repository) {
         return new GetProductoByIdInteractor(repository);
     }
-
-
+    @Bean
+    public UpdateProductoInteractor updateProductoInteractor(ProductoRepository repository) {
+        return new UpdateProductoInteractor(repository);
+    }
 }

@@ -8,6 +8,7 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.GetProductoByIdUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.ListarProductosUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.UpdateProductoUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +23,20 @@ public class ProductoController {
     private final ListarProductosUseCase listarProductos;
     private final AddProductoUseCase addProducto;
     private final GetProductoByIdUseCase getProductoByIdUseCase;
+    private final UpdateProductoUseCase updateProductoUseCase;
 
     @Autowired
     public ProductoController(
             AplicarDescuentoUseCase aplicarDescuento,
             ListarProductosUseCase listarProductos,
             AddProductoUseCase addProducto,
-            GetProductoByIdUseCase getProductoByIdUseCase)
+            GetProductoByIdUseCase getProductoByIdUseCase, UpdateProductoUseCase updateProductoUseCase)
     {
         this.aplicarDescuento = aplicarDescuento;
         this.listarProductos = listarProductos;
         this.addProducto = addProducto;
         this.getProductoByIdUseCase = getProductoByIdUseCase;
+        this.updateProductoUseCase = updateProductoUseCase;
     }
 
     @GetMapping
@@ -64,4 +67,13 @@ public class ProductoController {
         ProductoView producto = getProductoByIdUseCase.obtenerPorId(id);
         return ResponseEntity.ok(producto);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductoView> actualizarProducto(
+            @PathVariable Long id,
+            @RequestBody ProductoInsert update) {
+        ProductoView actualizado = updateProductoUseCase.update(id, update);
+        return ResponseEntity.ok(actualizado);
+    }
 }
+

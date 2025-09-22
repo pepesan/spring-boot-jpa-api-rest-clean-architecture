@@ -1,10 +1,7 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.controllers;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.*;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.GetProductoByIdUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.ListarProductosUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,6 +40,9 @@ class ProductoControllerTest {
 
     @MockitoBean
     GetProductoByIdUseCase getProductoByIdUseCase;
+
+    // @MockitoBean
+    // UpdateProductoUseCase   updateProductoUseCase;
 
     @Test
     @DisplayName("GET /productos devuelve lista de productos")
@@ -91,7 +91,7 @@ class ProductoControllerTest {
     }
 
     @Test
-    @DisplayName("POST /productos/{id}/descuento/{porcentaje} aplica descuento")
+    @DisplayName("GET /productos/{id}/descuento/{porcentaje} aplica descuento")
     void aplicarDescuentoProducto() throws Exception {
         AplicarDescuentoOutput expected = new AplicarDescuentoOutput();
         expected.idProducto = 5L;
@@ -123,5 +123,23 @@ class ProductoControllerTest {
                 .andExpect(jsonPath("$.nombre").value("Pantalla"))
                 .andExpect(jsonPath("$.precio").value(199.99));
     }
+    /*
+    @Test
+    void updateProductoPorId() throws Exception {
+        ProductoInsert producto = new ProductoInsert("Pantalla", 199.99);
+        ProductoView productoView = new ProductoView(6L, "Pantalla", 199.99);
+        given(updateProductoUseCase.update(6L,producto)).willReturn(productoView);
+
+        mockMvc.perform(put("/productos/6")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(producto)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.id").value(6L))
+                .andExpect(jsonPath("$.nombre").value("Pantalla"))
+                .andExpect(jsonPath("$.precio").value(199.99));
+    }
+
+     */
 }
 
