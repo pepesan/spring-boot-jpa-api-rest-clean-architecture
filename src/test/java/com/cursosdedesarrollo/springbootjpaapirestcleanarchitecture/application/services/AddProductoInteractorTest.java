@@ -1,8 +1,6 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services;
 
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.AplicarDescuentoInput;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.AplicarDescuentoOutput;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsert;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsertOrUpdate;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;
@@ -13,9 +11,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Bean;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +30,7 @@ class AddProductoInteractorTest {
     @DisplayName("add(): mapea desde ProductoInsert, guarda y devuelve ProductoView con ID asignado")
     void add_guardaYDevuelveView() {
         // arrange: input DTO
-        ProductoInsert input = new ProductoInsert("Teclado", 25.5);
+        ProductoInsertOrUpdate input = new ProductoInsertOrUpdate("Teclado", 25.5);
 
         // simulamos que el repo asigna ID al guardar (como haría JPA)
         when(repository.guardar(any(Producto.class))).thenAnswer(invocation -> {

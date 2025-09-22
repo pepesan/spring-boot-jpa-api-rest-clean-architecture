@@ -1,6 +1,6 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services;
 
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsert;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsertOrUpdate;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
@@ -18,7 +18,7 @@ public class AddProductoInteractor implements AddProductoUseCase {
 
 
     @Override
-    public ProductoView add(ProductoInsert producto) {
+    public ProductoView add(ProductoInsertOrUpdate producto) {
         Producto p = new Producto();
         p.setNombre(producto.getNombre());
         p.setPrecio(producto.getPrecio());

@@ -1,7 +1,7 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.acceptance;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.AplicarDescuentoOutput;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsert;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsertOrUpdate;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class ProductoControllerAcceptanceE2ETest {
     @Test
     @DisplayName("1) POST /productos crea y devuelve ProductoView")
     void crearProducto_ok() {
-        ProductoInsert body = new ProductoInsert("Teclado", 25.5);
+        ProductoInsertOrUpdate body = new ProductoInsertOrUpdate("Teclado", 25.5);
         ResponseEntity<ProductoView> resp = rest.postForEntity(baseUrl(), body, ProductoView.class);
 
         assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -58,8 +58,8 @@ class ProductoControllerAcceptanceE2ETest {
     @DisplayName("2) GET /productos lista lo creado")
     void listarProductos_ok() {
         // Arrange: crear 2 productos
-        rest.postForEntity(baseUrl(), new ProductoInsert("Monitor", 120.0), ProductoView.class);
-        rest.postForEntity(baseUrl(), new ProductoInsert("Ratón", 15.0), ProductoView.class);
+        rest.postForEntity(baseUrl(), new ProductoInsertOrUpdate("Monitor", 120.0), ProductoView.class);
+        rest.postForEntity(baseUrl(), new ProductoInsertOrUpdate("Ratón", 15.0), ProductoView.class);
 
         // Act
         ResponseEntity<ProductoView[]> resp = rest.getForEntity(baseUrl(), ProductoView[].class);
@@ -78,7 +78,7 @@ class ProductoControllerAcceptanceE2ETest {
     @DisplayName("3) POST /productos/{id}/descuento/{porcentaje} aplica y persiste el descuento")
     void aplicarDescuento_ok() {
         // Arrange: crear producto con precio 200.0
-        ProductoView creado = rest.postForEntity(baseUrl(), new ProductoInsert("Pantalla", 200.0), ProductoView.class).getBody();
+        ProductoView creado = rest.postForEntity(baseUrl(), new ProductoInsertOrUpdate("Pantalla", 200.0), ProductoView.class).getBody();
         assertNotNull(creado);
         Long id = creado.getId();
 

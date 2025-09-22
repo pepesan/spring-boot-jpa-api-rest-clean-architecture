@@ -1,6 +1,6 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services;
 
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsert;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsertOrUpdate;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.UpdateProductoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
@@ -15,7 +15,7 @@ public class UpdateProductoInteractor implements UpdateProductoUseCase {
     }
 
     @Override
-    public ProductoView update(Long id, ProductoInsert update) {
+    public ProductoView update(Long id, ProductoInsertOrUpdate update) {
         Producto producto = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
         producto.setNombre(update.getNombre());

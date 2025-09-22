@@ -2,7 +2,7 @@ package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.contr
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.AplicarDescuentoInput;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.AplicarDescuentoOutput;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsert;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsertOrUpdate;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
@@ -46,7 +46,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductoView> crear(@RequestBody ProductoInsert producto) {
+    public ResponseEntity<ProductoView> crear(@RequestBody ProductoInsertOrUpdate producto) {
         // Lógica para crear un producto (no implementada en este ejemplo)
         return ResponseEntity.ok(addProducto.add(producto));
     }
@@ -72,7 +72,7 @@ public class ProductoController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductoView> actualizarProducto(
             @PathVariable Long id,
-            @RequestBody ProductoInsert update) {
+            @RequestBody ProductoInsertOrUpdate update) {
         ProductoView actualizado = updateProductoUseCase.update(id, update);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(actualizado);
     }

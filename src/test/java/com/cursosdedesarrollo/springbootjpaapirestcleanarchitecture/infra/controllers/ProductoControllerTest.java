@@ -70,12 +70,12 @@ class ProductoControllerTest {
     @Test
     @DisplayName("POST /productos crea un producto")
     void crearProducto() throws Exception {
-        ProductoInsert input = new ProductoInsert();
+        ProductoInsertOrUpdate input = new ProductoInsertOrUpdate();
         input.setNombre("Monitor");
         input.setPrecio(120.0);
 
         ProductoView expected = new ProductoView(10L, "Monitor", 120.0);
-        when(addProducto.add(any(ProductoInsert.class))).thenReturn(expected);
+        when(addProducto.add(any(ProductoInsertOrUpdate.class))).thenReturn(expected);
 
         mockMvc.perform(post("/productos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +86,7 @@ class ProductoControllerTest {
                 .andExpect(jsonPath("$.nombre", is("Monitor")))
                 .andExpect(jsonPath("$.precio", is(120.0)));
 
-        verify(addProducto, times(1)).add(any(ProductoInsert.class));
+        verify(addProducto, times(1)).add(any(ProductoInsertOrUpdate.class));
         verifyNoMoreInteractions(addProducto);
     }
 

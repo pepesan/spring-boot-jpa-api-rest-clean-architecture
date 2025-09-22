@@ -1,12 +1,12 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos;
 
-public class ProductoInsert {
+public class ProductoInsertOrUpdate {
     private String nombre;
     private double precio;
 
-    public ProductoInsert() { }
+    public ProductoInsertOrUpdate() { }
 
-    public ProductoInsert(String nombre, double precio) {
+    public ProductoInsertOrUpdate(String nombre, double precio) {
         this.nombre = nombre;
         this.precio = precio;
     }
