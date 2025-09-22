@@ -4,11 +4,7 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.AplicarDescuentoOutput;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsertOrUpdate;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.GetProductoByIdUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.ListarProductosUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.UpdateProductoUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,19 +21,21 @@ public class ProductoController {
     private final AddProductoUseCase addProducto;
     private final GetProductoByIdUseCase getProductoByIdUseCase;
     private final UpdateProductoUseCase updateProductoUseCase;
+    private final DeleteProductoByIdUseCase deleteProductoByIdUseCase;
 
     @Autowired
     public ProductoController(
             AplicarDescuentoUseCase aplicarDescuento,
             ListarProductosUseCase listarProductos,
             AddProductoUseCase addProducto,
-            GetProductoByIdUseCase getProductoByIdUseCase, UpdateProductoUseCase updateProductoUseCase)
+            GetProductoByIdUseCase getProductoByIdUseCase, UpdateProductoUseCase updateProductoUseCase, DeleteProductoByIdUseCase deleteProductoByIdUseCase)
     {
         this.aplicarDescuento = aplicarDescuento;
         this.listarProductos = listarProductos;
         this.addProducto = addProducto;
         this.getProductoByIdUseCase = getProductoByIdUseCase;
         this.updateProductoUseCase = updateProductoUseCase;
+        this.deleteProductoByIdUseCase = deleteProductoByIdUseCase;
     }
 
     @GetMapping
@@ -75,6 +73,12 @@ public class ProductoController {
             @RequestBody ProductoInsertOrUpdate update) {
         ProductoView actualizado = updateProductoUseCase.update(id, update);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(actualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductoView> deletePorId(@PathVariable Long id) {
+        ProductoView producto = deleteProductoByIdUseCase.borrarPorId(id);
+        return ResponseEntity.ok(producto);
     }
 }
 
