@@ -40,4 +40,11 @@ public class ProductoRepositoryAdapter implements ProductoRepository {
                 .map(ProductoMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public Optional<Producto> deleteById(Long id) {
+        Optional<ProductoEntity> productoBBDD =  jpaRepository.findById(id);
+        productoBBDD.ifPresent(jpaRepository::delete);
+        return productoBBDD.map(ProductoMapper::toDomain);
+    }
 }
