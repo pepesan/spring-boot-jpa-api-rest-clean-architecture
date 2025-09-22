@@ -44,6 +44,9 @@ class ProductoControllerTest {
     @MockitoBean
     UpdateProductoUseCase   updateProductoUseCase;
 
+    @MockitoBean
+    DeleteProductoByIdUseCase   deleteProductoByIdUseCase;
+
     @Test
     @DisplayName("GET /productos devuelve lista de productos")
     void listarProductos() throws Exception {
@@ -123,24 +126,38 @@ class ProductoControllerTest {
                 .andExpect(jsonPath("$.nombre").value("Pantalla"))
                 .andExpect(jsonPath("$.precio").value(199.99));
     }
-    /*
+
     @Test
-    void updateProductoPorId() throws Exception {
-        ProductoInsert producto = new ProductoInsert("Pantalla", 199.99);
-        ProductoView productoView = new ProductoView(6L, "Pantalla", 199.99);
-        given(getProductoByIdUseCase.obtenerPorId(6L)).willReturn(productoView);
-        given(updateProductoUseCase.update(6L,producto)).willReturn(productoView);
+    void actualizarProducto() throws Exception {
+        ProductoInsertOrUpdate update = new ProductoInsertOrUpdate();
+        update.setNombre("Pantalla");
+        update.setPrecio(199.99);
+
+        ProductoView actualizado = new ProductoView(6L, "Pantalla", 199.99);
+        when(updateProductoUseCase.update(eq(6L), any(ProductoInsertOrUpdate.class))).thenReturn(actualizado);
 
         mockMvc.perform(put("/productos/6")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(producto)))
+                        .content(objectMapper.writeValueAsString(update)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(6L))
                 .andExpect(jsonPath("$.nombre").value("Pantalla"))
                 .andExpect(jsonPath("$.precio").value(199.99));
     }
 
-     */
+    @Test
+    void borrarProductoPorId() throws Exception {
+        ProductoView producto = new ProductoView(7L, "Teclado", 25.5);
+        when(deleteProductoByIdUseCase.borrarPorId(7L)).thenReturn(producto);
+
+        mockMvc.perform(delete("/productos/7"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(7L))
+                .andExpect(jsonPath("$.nombre").value("Teclado"))
+                .andExpect(jsonPath("$.precio").value(25.5));
+    }
+
 }
 
