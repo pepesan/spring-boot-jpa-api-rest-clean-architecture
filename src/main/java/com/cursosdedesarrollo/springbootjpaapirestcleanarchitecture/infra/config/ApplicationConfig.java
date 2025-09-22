@@ -1,10 +1,8 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.config;
 
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.GetProductoByIdUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.out.ProductosRemoteUseCase;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.AddProductoInteractor;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.AplicarDescuentoInteractor;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.ConsultarProductosClienteInteractor;
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.ListarProductosInteractor;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.*;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +24,10 @@ public class ApplicationConfig {
     @Bean
     public ConsultarProductosClienteInteractor ConsultarProductosClienteInteractor(ProductosRemoteUseCase useCase) {
         return new ConsultarProductosClienteInteractor(useCase);
+    }
+    @Bean
+    public GetProductoByIdInteractor getProductoByIdInteractor(ProductoRepository repository) {
+        return new GetProductoByIdInteractor(repository);
     }
 
 

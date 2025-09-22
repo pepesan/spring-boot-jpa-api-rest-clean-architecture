@@ -6,6 +6,7 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.GetProductoByIdUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.ListarProductosUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +21,19 @@ public class ProductoController {
     private final AplicarDescuentoUseCase aplicarDescuento;
     private final ListarProductosUseCase listarProductos;
     private final AddProductoUseCase addProducto;
+    private final GetProductoByIdUseCase getProductoByIdUseCase;
 
     @Autowired
     public ProductoController(
             AplicarDescuentoUseCase aplicarDescuento,
             ListarProductosUseCase listarProductos,
-            AddProductoUseCase addProducto)
+            AddProductoUseCase addProducto,
+            GetProductoByIdUseCase getProductoByIdUseCase)
     {
         this.aplicarDescuento = aplicarDescuento;
         this.listarProductos = listarProductos;
         this.addProducto = addProducto;
+        this.getProductoByIdUseCase = getProductoByIdUseCase;
     }
 
     @GetMapping
@@ -53,5 +57,11 @@ public class ProductoController {
 
         var output = aplicarDescuento.ejecutar(input);
         return ResponseEntity.ok(output);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductoView> obtenerPorId(@PathVariable Long id) {
+        ProductoView producto = getProductoByIdUseCase.obtenerPorId(id);
+        return ResponseEntity.ok(producto);
     }
 }

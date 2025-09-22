@@ -3,6 +3,7 @@ package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.contr
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.*;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AplicarDescuentoUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.GetProductoByIdUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.ListarProductosUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,6 +40,9 @@ class ProductoControllerTest {
 
     @MockitoBean
     private AddProductoUseCase addProducto;
+
+    @MockitoBean
+    GetProductoByIdUseCase getProductoByIdUseCase;
 
     @Test
     @DisplayName("GET /productos devuelve lista de productos")
@@ -105,4 +110,18 @@ class ProductoControllerTest {
                 .ejecutar(any(AplicarDescuentoInput.class));
         verifyNoMoreInteractions(aplicarDescuento);
     }
+
+    @Test
+    void devuelveProductoPorId() throws Exception {
+        ProductoView producto = new ProductoView(5L, "Pantalla", 199.99);
+        given(getProductoByIdUseCase.obtenerPorId(5L)).willReturn(producto);
+
+        mockMvc.perform(get("/productos/5"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.id").value(5L))
+                .andExpect(jsonPath("$.nombre").value("Pantalla"))
+                .andExpect(jsonPath("$.precio").value(199.99));
+    }
 }
+
