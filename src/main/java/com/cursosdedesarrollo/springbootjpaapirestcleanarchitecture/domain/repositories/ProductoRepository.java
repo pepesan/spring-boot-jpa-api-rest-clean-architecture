@@ -9,4 +9,6 @@ public interface ProductoRepository {
     Optional<Producto> findById(Long id);
     Producto guardar(Producto producto);
     List<Producto> findAll();
+
+    Optional<Producto> deleteById(Long id);
 }

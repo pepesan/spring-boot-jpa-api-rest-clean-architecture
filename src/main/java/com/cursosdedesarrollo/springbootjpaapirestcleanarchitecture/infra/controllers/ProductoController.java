@@ -10,6 +10,7 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.ListarProductosUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.UpdateProductoUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,12 +69,12 @@ public class ProductoController {
         return ResponseEntity.ok(producto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductoView> actualizarProducto(
             @PathVariable Long id,
             @RequestBody ProductoInsert update) {
         ProductoView actualizado = updateProductoUseCase.update(id, update);
-        return ResponseEntity.ok(actualizado);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(actualizado);
     }
 }
 

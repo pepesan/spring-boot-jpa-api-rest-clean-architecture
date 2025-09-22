@@ -41,8 +41,8 @@ class ProductoControllerTest {
     @MockitoBean
     GetProductoByIdUseCase getProductoByIdUseCase;
 
-    // @MockitoBean
-    // UpdateProductoUseCase   updateProductoUseCase;
+    @MockitoBean
+    UpdateProductoUseCase   updateProductoUseCase;
 
     @Test
     @DisplayName("GET /productos devuelve lista de productos")
@@ -128,6 +128,7 @@ class ProductoControllerTest {
     void updateProductoPorId() throws Exception {
         ProductoInsert producto = new ProductoInsert("Pantalla", 199.99);
         ProductoView productoView = new ProductoView(6L, "Pantalla", 199.99);
+        given(getProductoByIdUseCase.obtenerPorId(6L)).willReturn(productoView);
         given(updateProductoUseCase.update(6L,producto)).willReturn(productoView);
 
         mockMvc.perform(put("/productos/6")

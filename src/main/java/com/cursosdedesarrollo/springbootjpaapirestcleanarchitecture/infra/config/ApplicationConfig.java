@@ -33,4 +33,8 @@ public class ApplicationConfig {
     public UpdateProductoInteractor updateProductoInteractor(ProductoRepository repository) {
         return new UpdateProductoInteractor(repository);
     }
+    @Bean
+    public DeleteProductoByIdInteractor deleteProductoByIdInteractor(ProductoRepository repository) {
+        return new DeleteProductoByIdInteractor(repository);
+    }
 }
