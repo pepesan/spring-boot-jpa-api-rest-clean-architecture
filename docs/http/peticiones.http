@@ -1,3 +1,12 @@
+GET http://localhost:8080/productos
+
+<> 2025-09-15T152834.200.json
+<> 2025-09-12T113852.200.json
+<> 2025-09-09T185625.200.json
+<> 2025-09-09T184851.200.json
+<> 2025-09-09T184844.200.json
+
+###
 POST http://localhost:8080/productos
 Content-Type: application/json
 Accept: application/json
@@ -26,22 +35,9 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/productos
-
-<> 2025-09-15T152834.200.json
-<> 2025-09-12T113852.200.json
-<> 2025-09-09T185625.200.json
-<> 2025-09-09T184851.200.json
-<> 2025-09-09T184844.200.json
-
-###
-
 GET http://localhost:8080/productos/1/descuento/10
 
 ###
-
-
-
 GET http://localhost:8080/productos/1
 
 ###

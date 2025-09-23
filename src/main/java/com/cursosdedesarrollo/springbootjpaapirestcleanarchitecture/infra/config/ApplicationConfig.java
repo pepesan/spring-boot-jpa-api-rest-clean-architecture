@@ -1,6 +1,5 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.config;
 
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.GetProductoByIdUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.out.ProductosRemoteUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.*;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;

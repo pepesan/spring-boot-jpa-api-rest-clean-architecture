@@ -28,7 +28,9 @@ public class ProductoController {
             AplicarDescuentoUseCase aplicarDescuento,
             ListarProductosUseCase listarProductos,
             AddProductoUseCase addProducto,
-            GetProductoByIdUseCase getProductoByIdUseCase, UpdateProductoUseCase updateProductoUseCase, DeleteProductoByIdUseCase deleteProductoByIdUseCase)
+            GetProductoByIdUseCase getProductoByIdUseCase,
+            UpdateProductoUseCase updateProductoUseCase,
+            DeleteProductoByIdUseCase deleteProductoByIdUseCase)
     {
         this.aplicarDescuento = aplicarDescuento;
         this.listarProductos = listarProductos;
@@ -45,7 +47,6 @@ public class ProductoController {
 
     @PostMapping
     public ResponseEntity<ProductoView> crear(@RequestBody ProductoInsertOrUpdate producto) {
-        // Lógica para crear un producto (no implementada en este ejemplo)
         return ResponseEntity.ok(addProducto.add(producto));
     }
 
