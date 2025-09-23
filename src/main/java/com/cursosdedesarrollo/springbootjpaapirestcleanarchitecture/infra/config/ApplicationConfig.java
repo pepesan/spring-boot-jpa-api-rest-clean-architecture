@@ -1,7 +1,10 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.config;
 
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddInventarioUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.out.ProductosRemoteUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.*;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.InventoryRepository;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,5 +38,23 @@ public class ApplicationConfig {
     @Bean
     public DeleteProductoByIdInteractor deleteProductoByIdInteractor(ProductoRepository repository) {
         return new DeleteProductoByIdInteractor(repository);
+    }
+
+    @Bean
+    public AddInventarioUseCase addInventarioUseCase(InventoryRepository repository) {
+        return new AddInventarioInteractor(repository);
+    }
+
+    @Bean
+    public AddTransactionInteractor addTransactionInteractor(
+            AddProductoUseCase addProductoUseCase,
+            AddInventarioUseCase addInventarioUseCase,
+            ProductoRepository productoRepository,
+            InventoryRepository inventoryRepository) {
+        return new AddTransactionInteractor(
+                addProductoUseCase,
+                addInventarioUseCase,
+                productoRepository,
+                inventoryRepository);
     }
 }
