@@ -7,24 +7,24 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddInventarioUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddTransactionUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.DeleteProductoByIdUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.InventoryRepository;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.ProductoRepository;
 
 public class AddTransactionInteractor implements AddTransactionUseCase {
-    private final ProductoRepository productoRepository;
-    private final InventoryRepository inventoryRepository;
     private final AddProductoUseCase addProductoUseCase;
     private final AddInventarioUseCase addInventarioUseCase;
+    private final DeleteProductoByIdUseCase deleteProductoByIdUseCase;
 
     public AddTransactionInteractor(
             AddProductoUseCase addProductoUseCase,
             AddInventarioUseCase addInventarioUseCase,
             ProductoRepository productoRepository,
-            InventoryRepository inventoryRepository){
+            InventoryRepository inventoryRepository,
+            DeleteProductoByIdUseCase deleteProductoByIdUseCase){
         this.addProductoUseCase = addProductoUseCase;
         this.addInventarioUseCase = addInventarioUseCase;
-        this.productoRepository = productoRepository;
-        this.inventoryRepository = inventoryRepository;
+        this.deleteProductoByIdUseCase = deleteProductoByIdUseCase;
     }
 
     public ProductoView addTransaction(ProductoInsertOrUpdate producto) {
@@ -32,12 +32,12 @@ public class AddTransactionInteractor implements AddTransactionUseCase {
         InventarioView inventarioGuardado = null;
         try {
             productoGuardado = addProductoUseCase.add(producto);
-            inventarioGuardado = this.addInventarioUseCase.add(new InventarioInsertOrUpdate(productoGuardado.getId(), 0));
+            inventarioGuardado = addInventarioUseCase.add(
+                    new InventarioInsertOrUpdate(productoGuardado.getId(), 0));
         } catch (Exception e) {
             // Aquí deberías eliminar el producto si falla el inventario
-            productoRepository.deleteById(productoGuardado.getId());
+            deleteProductoByIdUseCase.borrarPorId(productoGuardado.getId());
         }
-
         return productoGuardado;
     }
 }

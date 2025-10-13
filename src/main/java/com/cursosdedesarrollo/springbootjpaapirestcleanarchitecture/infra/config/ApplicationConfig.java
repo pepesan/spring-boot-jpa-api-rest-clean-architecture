@@ -2,6 +2,7 @@ package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.confi
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddInventarioUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.AddProductoUseCase;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.DeleteProductoByIdUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.out.ProductosRemoteUseCase;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.services.*;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.InventoryRepository;
@@ -49,12 +50,14 @@ public class ApplicationConfig {
     public AddTransactionInteractor addTransactionInteractor(
             AddProductoUseCase addProductoUseCase,
             AddInventarioUseCase addInventarioUseCase,
+            DeleteProductoByIdUseCase deleteProductoByIdUseCase,
             ProductoRepository productoRepository,
             InventoryRepository inventoryRepository) {
         return new AddTransactionInteractor(
                 addProductoUseCase,
                 addInventarioUseCase,
                 productoRepository,
-                inventoryRepository);
+                inventoryRepository,
+                deleteProductoByIdUseCase);
     }
 }

@@ -8,7 +8,11 @@ public class Inventory {
 
     public Inventory(Long id, int quantity) {
         this.id = id;
+        if (this.getId() == null || this.getId() <= 0)
+            throw new IllegalArgumentException("El id debe existir y ser mayor que 0");
         this.quantity = quantity;
+        if (this.getQuantity() <= 0)
+            throw new IllegalArgumentException("La cantidad debe ser mayor que 0");
     }
 
     public Long getId() {

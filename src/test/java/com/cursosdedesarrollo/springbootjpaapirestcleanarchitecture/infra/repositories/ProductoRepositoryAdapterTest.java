@@ -68,6 +68,7 @@ class ProductoRepositoryAdapterTest {
     @Test
     @DisplayName("guardar: persiste el entity mapeado y devuelve el dominio mapeado del guardado")
     void guardar_ok() {
+        // Given
         // arrange (dominio de entrada)
         Producto entrada = new Producto(1L, "Ratón", 15.0);
 
@@ -80,8 +81,10 @@ class ProductoRepositoryAdapterTest {
         when(jpaRepository.save(any(ProductoEntity.class))).thenReturn(saved);
 
         // act
+        // When
         Producto resultado = adapter.guardar(entrada);
 
+        // Then
         // assert: devuelve lo mapeado desde el guardado
         assertNotNull(resultado);
         assertEquals(1L, resultado.getId());

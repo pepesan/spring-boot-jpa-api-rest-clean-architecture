@@ -5,6 +5,4 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 
 public interface AddTransactionUseCase {
     ProductoView addTransaction(ProductoInsertOrUpdate productoInsertOrUpdate);
-
-
 }
