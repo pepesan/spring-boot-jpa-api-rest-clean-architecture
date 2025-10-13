@@ -19,8 +19,9 @@ class InventoryTest {
         @DisplayName("Crea producto válido")
         void creaProductoValido() {
             // Given Punto inicial
+            Inventory i;
             // When accion a realizar
-            Inventory i = new Inventory(1L, 100);
+            i = new Inventory(1L, 100);
             // Then resultado esperado
             assertAll(
                     () -> assertEquals(1L, i.getId()),
