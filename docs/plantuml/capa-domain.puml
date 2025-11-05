@@ -1,0 +1,66 @@
+@startuml
+skinparam packageStyle rectangle
+
+package "com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models" {
+
+  class Inventory {
+    - Long id
+    - int quantity
+    --
+    + Inventory()
+    + Inventory(Long id, int quantity)
+    + Long getId()
+    + void setId(Long id)
+    + int getQuantity()
+    + void setQuantity(int quantity)
+  }
+
+  class Producto {
+    - Long id
+    - String nombre
+    - double precio
+    --
+    + Producto()
+    + Producto(Long id, String nombre, double precio)
+    + void aplicarDescuento(double porcentaje)
+    + void setId(Long id)
+    + Long getId()
+    + String getNombre()
+    + void setNombre(String nombre)
+    + double getPrecio()
+    + void setPrecio(double precio)
+  }
+}
+
+package "com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories" {
+
+  interface InventoryRepository {
+    + Optional<Inventory> findById(Long id)
+    + Inventory guardar(Inventory inventory)
+    + List<Inventory> findAll()
+    + Optional<Inventory> deleteById(Long id)
+  }
+
+  interface ProductoRepository {
+    + Optional<Producto> findById(Long id)
+    + Producto guardar(Producto producto)
+    + List<Producto> findAll()
+    + Optional<Producto> deleteById(Long id)
+  }
+}
+
+package "com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.validator" {
+
+  class ProductoValidator {
+    {static} + void validate(Producto producto)
+    {static} + void validateDiscount(double porcentaje)
+  }
+}
+
+' Dependencias / asociaciones
+Producto ..> ProductoValidator : usa
+ProductoValidator ..> Producto : valida
+InventoryRepository --> Inventory
+ProductoRepository --> Producto
+
+@enduml
