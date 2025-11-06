@@ -29,15 +29,10 @@ public class AddTransactionInteractor implements AddTransactionUseCase {
 
     public ProductoView addTransaction(ProductoInsertOrUpdate producto) {
         ProductoView productoGuardado = null;
-        InventarioView inventarioGuardado = null;
-        try {
-            productoGuardado = addProductoUseCase.add(producto);
-            inventarioGuardado = addInventarioUseCase.add(
+        productoGuardado = addProductoUseCase.add(producto);
+        addInventarioUseCase.add(
                     new InventarioInsertOrUpdate(productoGuardado.getId(), 0));
-        } catch (Exception e) {
-            // Aquí deberías eliminar el producto si falla el inventario
-            deleteProductoByIdUseCase.borrarPorId(productoGuardado.getId());
-        }
+
         return productoGuardado;
     }
 }
