@@ -31,7 +31,7 @@ public class AddTransactionInteractor implements AddTransactionUseCase {
         ProductoView productoGuardado = null;
         productoGuardado = addProductoUseCase.add(producto);
         addInventarioUseCase.add(
-                    new InventarioInsertOrUpdate(productoGuardado.getId(), 0));
+                    new InventarioInsertOrUpdate(productoGuardado.getId(), 1));
 
         return productoGuardado;
     }
