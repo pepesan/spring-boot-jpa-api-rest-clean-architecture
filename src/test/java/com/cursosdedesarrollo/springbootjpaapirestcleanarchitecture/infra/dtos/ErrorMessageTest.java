@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.dto;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.dtos;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

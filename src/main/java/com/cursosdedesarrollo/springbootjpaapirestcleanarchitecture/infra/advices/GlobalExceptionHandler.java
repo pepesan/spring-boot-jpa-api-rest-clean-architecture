@@ -1,6 +1,6 @@
 package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.advices;
 
-import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.dto.ErrorMessage;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.dtos.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

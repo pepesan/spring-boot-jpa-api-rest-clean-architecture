@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.dto;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.dtos;
 
 public class ErrorMessage {
     private String mensaje;

@@ -12,10 +12,13 @@ class ProductoMapperTest {
     @Test
     @DisplayName("toEntity: convierte correctamente un Producto a ProductoEntity")
     void toEntity_ok() {
+        // given
         Producto producto = new Producto(1L, "Teclado", 25.5);
 
+        // when
         ProductoEntity entity = ProductoMapper.toEntity(producto);
 
+        // then
         assertNotNull(entity);
         assertEquals(1L, entity.getId());
         assertEquals("Teclado", entity.getNombre());
@@ -25,10 +28,13 @@ class ProductoMapperTest {
     @Test
     @DisplayName("toDomain: convierte correctamente un ProductoEntity a Producto")
     void toDomain_ok() {
+        // given
         ProductoEntity entity = new ProductoEntity(2L, "Ratón", 15.0);
 
+        // when
         Producto producto = ProductoMapper.toDomain(entity);
 
+        // then
         assertNotNull(producto);
         assertEquals(2L, producto.getId());
         assertEquals("Ratón", producto.getNombre());
