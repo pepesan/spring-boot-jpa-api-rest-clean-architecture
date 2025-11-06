@@ -5,6 +5,8 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoInsertOrUpdate;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.ports.in.*;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.dtos.ProductoInsertOrUpdateDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +48,12 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductoView> crear(@RequestBody ProductoInsertOrUpdate producto) {
-        return ResponseEntity.ok(addProducto.add(producto));
+    public ResponseEntity<ProductoView> crear(@Valid @RequestBody ProductoInsertOrUpdateDTO producto) {
+        // lo suyo sería hacer un mapper
+        ProductoInsertOrUpdate productoInsertOrUpdate = new ProductoInsertOrUpdate();
+        productoInsertOrUpdate.setNombre(producto.getNombre());
+        productoInsertOrUpdate.setPrecio(producto.getPrecio());
+        return ResponseEntity.ok(addProducto.add(productoInsertOrUpdate));
     }
 
     @GetMapping("/{id}/descuento/{porcentaje}")
@@ -71,8 +77,12 @@ public class ProductoController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductoView> actualizarProducto(
             @PathVariable Long id,
-            @RequestBody ProductoInsertOrUpdate update) {
-        ProductoView actualizado = updateProductoUseCase.update(id, update);
+            @Valid @RequestBody ProductoInsertOrUpdateDTO update) {
+        // lo suyo sería hacer un mapper
+        ProductoInsertOrUpdate productoInsertOrUpdate = new ProductoInsertOrUpdate();
+        productoInsertOrUpdate.setNombre(update.getNombre());
+        productoInsertOrUpdate.setPrecio(update.getPrecio());
+        ProductoView actualizado = updateProductoUseCase.update(id, productoInsertOrUpdate);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(actualizado);
     }
 
