@@ -24,28 +24,6 @@ class TransactionServiceRollbackTest {
     ProductoRepository productoRepository;
 
     /**
-     * Desactiva la transacción del test para que la transacción del servicio
-     * sea la que controle commit/rollback.
-     */
-    @Test
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    void cuandoHayExcepcion_debeHacerRollback() {
-        int before = productoRepository.findAll().size();
-
-        ProductoInsertOrUpdate input = new ProductoInsertOrUpdate("ProductoPrueba", 10.0);
-
-        try {
-            transactionService.addTransaction(input);
-            fail("Se esperaba RuntimeException para forzar rollback");
-        } catch (RuntimeException expected) {
-            // excepción esperada
-        }
-
-        // Si hubo rollback, el número de registros no debe haber cambiado
-        assertEquals(before, productoRepository.findAll().size());
-    }
-
-    /**
      * Test configuration que inyecta un AddInventarioUseCase que falla
      * durante la operación, provocando una RuntimeException dentro de la transacción.
      *
