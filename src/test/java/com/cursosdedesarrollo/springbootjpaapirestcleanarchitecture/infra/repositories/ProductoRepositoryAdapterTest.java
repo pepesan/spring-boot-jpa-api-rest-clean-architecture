@@ -2,6 +2,7 @@ package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repos
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.entities.ProductoEntity;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.jparepository.SpringDataProductoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

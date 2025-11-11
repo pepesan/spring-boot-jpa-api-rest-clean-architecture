@@ -3,6 +3,7 @@ package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repos
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Inventory;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.InventoryRepository;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.entities.InventoryEntity;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.jparepository.SpringDataInventoryRepository;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.mappers.InventoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

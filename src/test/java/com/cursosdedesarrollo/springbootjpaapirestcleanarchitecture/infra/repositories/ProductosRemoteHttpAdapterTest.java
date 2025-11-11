@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.clients;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositories;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import okhttp3.mockwebserver.MockResponse;
@@ -62,9 +62,12 @@ class ProductosRemoteHttpAdapterTest {
         List<ProductoView> res = adapter.listarProductos();
 
         assertThat(res).hasSize(2);
-        assertThat(res.get(0).getId()).isEqualTo(1L);
-        assertThat(res.get(0).getNombre()).isEqualTo("Teclado");
-        assertThat(res.get(0).getPrecio()).isEqualTo(79.9);
+        assertThat(res.getFirst().getId()).isEqualTo(1L);
+        assertThat(res.getFirst().getNombre()).isEqualTo("Teclado");
+        assertThat(res.getFirst().getPrecio()).isEqualTo(79.9);
+        assertThat(res.get(1).getId()).isEqualTo(2L);
+        assertThat(res.get(1).getNombre()).isEqualTo("Raton");
+        assertThat(res.get(1).getPrecio()).isEqualTo(39.5);
     }
 
     @Test

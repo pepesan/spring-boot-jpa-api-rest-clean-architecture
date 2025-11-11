@@ -1,6 +1,7 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositories;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.jparepositories;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.entities.ProductoEntity;
+import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.jparepository.SpringDataProductoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

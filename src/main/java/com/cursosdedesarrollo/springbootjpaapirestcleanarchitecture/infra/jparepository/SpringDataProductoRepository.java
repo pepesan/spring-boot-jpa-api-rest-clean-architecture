@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositories;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.jparepository;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.entities.ProductoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
