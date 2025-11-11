@@ -134,7 +134,8 @@ class ProductoControllerTest {
         update.setPrecio(199.99);
 
         ProductoView actualizado = new ProductoView(6L, "Pantalla", 199.99);
-        when(updateProductoUseCase.update(eq(6L), any(ProductoInsertOrUpdate.class))).thenReturn(actualizado);
+        when(updateProductoUseCase.update(eq(6L), any(ProductoInsertOrUpdate.class)))
+                .thenReturn(actualizado);
 
         mockMvc.perform(put("/productos/6")
                         .contentType(MediaType.APPLICATION_JSON)
