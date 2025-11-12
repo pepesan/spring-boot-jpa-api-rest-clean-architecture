@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositories;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.adapters;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Producto;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.entities.ProductoEntity;

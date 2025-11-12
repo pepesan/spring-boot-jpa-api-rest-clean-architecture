@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositories;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.adapters;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.application.dtos.ProductoView;
 import okhttp3.mockwebserver.MockResponse;

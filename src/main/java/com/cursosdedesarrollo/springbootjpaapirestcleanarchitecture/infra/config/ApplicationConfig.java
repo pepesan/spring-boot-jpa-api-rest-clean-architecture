@@ -49,15 +49,9 @@ public class ApplicationConfig {
     @Bean
     public AddTransactionInteractor addTransactionInteractor(
             AddProductoUseCase addProductoUseCase,
-            AddInventarioUseCase addInventarioUseCase,
-            DeleteProductoByIdUseCase deleteProductoByIdUseCase,
-            ProductoRepository productoRepository,
-            InventoryRepository inventoryRepository) {
+            AddInventarioUseCase addInventarioUseCase) {
         return new AddTransactionInteractor(
                 addProductoUseCase,
-                addInventarioUseCase,
-                productoRepository,
-                inventoryRepository,
-                deleteProductoByIdUseCase);
+                addInventarioUseCase);
     }
 }

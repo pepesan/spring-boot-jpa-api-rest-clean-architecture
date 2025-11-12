@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.repositories;
+package com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.infra.adapters;
 
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.models.Inventory;
 import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repositories.InventoryRepository;

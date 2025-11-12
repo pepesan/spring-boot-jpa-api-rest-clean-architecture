@@ -14,22 +14,16 @@ import com.cursosdedesarrollo.springbootjpaapirestcleanarchitecture.domain.repos
 public class AddTransactionInteractor implements AddTransactionUseCase {
     private final AddProductoUseCase addProductoUseCase;
     private final AddInventarioUseCase addInventarioUseCase;
-    private final DeleteProductoByIdUseCase deleteProductoByIdUseCase;
 
     public AddTransactionInteractor(
             AddProductoUseCase addProductoUseCase,
-            AddInventarioUseCase addInventarioUseCase,
-            ProductoRepository productoRepository,
-            InventoryRepository inventoryRepository,
-            DeleteProductoByIdUseCase deleteProductoByIdUseCase){
+            AddInventarioUseCase addInventarioUseCase){
         this.addProductoUseCase = addProductoUseCase;
         this.addInventarioUseCase = addInventarioUseCase;
-        this.deleteProductoByIdUseCase = deleteProductoByIdUseCase;
     }
 
     public ProductoView addTransaction(ProductoInsertOrUpdate producto) {
-        ProductoView productoGuardado = null;
-        productoGuardado = addProductoUseCase.add(producto);
+        ProductoView productoGuardado = addProductoUseCase.add(producto);
         addInventarioUseCase.add(
                     new InventarioInsertOrUpdate(productoGuardado.getId(), 1));
 
