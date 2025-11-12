@@ -31,7 +31,8 @@ class AddInventarioInteractorTest {
         InventarioInsertOrUpdate dto = new InventarioInsertOrUpdate(1L, 100);
 
         // simulamos que el repositorio devuelve la entidad guardada
-        when(repository.guardar(any(Inventory.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(repository.guardar(any(Inventory.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
 
         // when
         InventarioView view = interactor.add(dto);

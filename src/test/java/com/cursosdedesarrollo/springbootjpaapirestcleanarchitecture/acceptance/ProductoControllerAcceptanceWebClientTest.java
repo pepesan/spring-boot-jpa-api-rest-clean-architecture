@@ -204,6 +204,8 @@ class ProductoControllerAcceptanceWebClientTest {
                 .expectBody()
                 .jsonPath("$.idProducto").isEqualTo(id.intValue())
                 // no sabemos exactamente la fórmula, así que solo comprobamos que viene el campo
-                .jsonPath("$.precioFinal").isNumber();
+                .jsonPath("$.precioFinal").isNumber()
+                .jsonPath("$.precioFinal").isEqualTo(750.0);
+
     }
 }
