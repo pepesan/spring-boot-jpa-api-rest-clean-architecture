@@ -16,8 +16,10 @@ public class ProductoViewSteps {
         producto = new ProductoView();
     }
 
-    @Cuando("creo un ProductoView con id {long}, nombre {string} y precio {double}")
-    public void creoUnProductoViewConIdNombreYPrecio(long id, String nombre, double precio) {
+    @Cuando(value = "creo un ProductoView con id {long}, nombre {string} y precio {double}")
+    public void creoUnProductoViewConIdNombreYPrecio(long id,
+                                                     String nombre,
+                                                     double precio) {
         producto = new ProductoView(id, nombre, precio);
     }
 
