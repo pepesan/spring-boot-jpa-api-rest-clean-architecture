@@ -50,12 +50,15 @@ class ProductoControllerTest {
     @Test
     @DisplayName("GET /productos devuelve lista de productos")
     void listarProductos() throws Exception {
+        // Given
         ProductoView p1 = new ProductoView(1L, "Teclado", 25.5);
         ProductoView p2 = new ProductoView(2L, "Ratón", 15.0);
         when(listarProductos.listar()).thenReturn(List.of(p1, p2));
 
+        // When
         mockMvc.perform(get("/productos")
                         .accept(MediaType.APPLICATION_JSON))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -76,20 +79,24 @@ class ProductoControllerTest {
         ProductoInsertOrUpdate input = new ProductoInsertOrUpdate();
         input.setNombre("Monitor");
         input.setPrecio(120.0);
-
-        ProductoView expected = new ProductoView(10L, "Monitor", 120.0);
+        // Given
+        ProductoView expected
+                = new ProductoView(10L, "Monitor", 120.0);
         when(addProducto.add(any(ProductoInsertOrUpdate.class))).thenReturn(expected);
 
+        // When
         mockMvc.perform(post("/productos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(10)))
                 .andExpect(jsonPath("$.nombre", is("Monitor")))
                 .andExpect(jsonPath("$.precio", is(120.0)));
 
-        verify(addProducto, times(1)).add(any(ProductoInsertOrUpdate.class));
+        verify(addProducto, times(1))
+                .add(any(ProductoInsertOrUpdate.class));
         verifyNoMoreInteractions(addProducto);
     }
 
@@ -99,12 +106,13 @@ class ProductoControllerTest {
         AplicarDescuentoOutput expected = new AplicarDescuentoOutput();
         expected.idProducto = 5L;
         expected.precioFinal = 150.0;
-
+        // Given
         when(aplicarDescuento.ejecutar(any(AplicarDescuentoInput.class)))
                 .thenReturn(expected);
-
+        // When
         mockMvc.perform(get("/productos/5/descuento/25")
                         .accept(MediaType.APPLICATION_JSON))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idProducto", is(5)))
                 .andExpect(jsonPath("$.precioFinal", is(150.0)));
@@ -116,10 +124,13 @@ class ProductoControllerTest {
 
     @Test
     void devuelveProductoPorId() throws Exception {
-        ProductoView producto = new ProductoView(5L, "Pantalla", 199.99);
+        // Given
+        ProductoView producto =
+                new ProductoView(5L, "Pantalla", 199.99);
         given(getProductoByIdUseCase.obtenerPorId(5L)).willReturn(producto);
-
+        // When
         mockMvc.perform(get("/productos/5"))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.id").value(5L))
@@ -132,14 +143,16 @@ class ProductoControllerTest {
         ProductoInsertOrUpdate update = new ProductoInsertOrUpdate();
         update.setNombre("Pantalla");
         update.setPrecio(199.99);
-
-        ProductoView actualizado = new ProductoView(6L, "Pantalla", 199.99);
+        // Given
+        ProductoView actualizado =
+                new ProductoView(6L, "Pantalla", 199.99);
         when(updateProductoUseCase.update(eq(6L), any(ProductoInsertOrUpdate.class)))
                 .thenReturn(actualizado);
-
+        // When
         mockMvc.perform(put("/productos/6")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(update)))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(6L))
@@ -149,10 +162,13 @@ class ProductoControllerTest {
 
     @Test
     void borrarProductoPorId() throws Exception {
-        ProductoView producto = new ProductoView(7L, "Teclado", 25.5);
+        // Given
+        ProductoView producto =
+                new ProductoView(7L, "Teclado", 25.5);
         when(deleteProductoByIdUseCase.borrarPorId(7L)).thenReturn(producto);
-
+        // When
         mockMvc.perform(delete("/productos/7"))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(7L))

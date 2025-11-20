@@ -20,17 +20,34 @@ class ProductoControllerAcceptanceWebClientTest {
     private WebTestClient webTestClient;
 
     @Test
+    @DisplayName("GET /productos devuelve 200 y JSON")
+    void listarProductos() {
+        // When
+        webTestClient.get()
+                .uri("/productos")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+        // Then
+                .expectStatus().isOk()
+                .expectHeader()
+                    .contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+                .expectBody()
+                .jsonPath("$").isArray();
+    }
+
+    @Test
     @DisplayName("POST /productos crea y devuelve el producto")
     void crearProducto() {
         ProductoInsertOrUpdate body = new ProductoInsertOrUpdate();
         body.setNombre("Monitor");
         body.setPrecio(120.0);
-
+        // When
         webTestClient.post()
                 .uri("/productos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(body)
                 .exchange()
+        // Then
                 .expectStatus().isOk()
                 .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
                 .expectBody(ProductoView.class)
@@ -40,6 +57,44 @@ class ProductoControllerAcceptanceWebClientTest {
                     assertThat(p.getNombre()).isEqualTo("Monitor");
                     assertThat(p.getPrecio()).isEqualTo(120.0);
                 });
+    }
+
+    @Test
+    @DisplayName("GET /productos/{id}/descuento/{porcentaje} aplica descuento sobre un producto existente")
+    void aplicarDescuento() {
+        // 1. crear el producto sobre el que vamos a aplicar descuento
+        ProductoInsertOrUpdate body = new ProductoInsertOrUpdate();
+        body.setNombre("Portátil");
+        body.setPrecio(1000.0);
+
+        ProductoView creado =
+                webTestClient.post()
+                        .uri("/productos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(body)
+                        .exchange()
+                        .expectStatus().isOk()
+                        .expectBody(ProductoView.class)
+                        .returnResult()
+                        .getResponseBody();
+
+        assertThat(creado).isNotNull();
+        Long id = creado.getId();
+        assertThat(id).isNotNull();
+        // When
+        // 2. aplicar el descuento al id real (no al 5 fijo)
+        webTestClient.get()
+                .uri("/productos/{id}/descuento/{porcentaje}", id, 25)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+        // Then
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.idProducto").isEqualTo(id.intValue())
+                // no sabemos exactamente la fórmula, así que solo comprobamos que viene el campo
+                .jsonPath("$.precioFinal").isNumber()
+                .jsonPath("$.precioFinal").isEqualTo(750.0);
+
     }
 
     @Test
@@ -64,14 +119,16 @@ class ProductoControllerAcceptanceWebClientTest {
         assertThat(creado).isNotNull();
         Long id = creado.getId();
         assertThat(id).isNotNull();
-
+        // When
         // obtener por id
         webTestClient.get()
                 .uri("/productos/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
+        // Then
                 .expectStatus().isOk()
-                .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+                .expectHeader()
+                    .contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(id.intValue())
                 .jsonPath("$.nombre").isEqualTo("Ratón")
@@ -159,53 +216,4 @@ class ProductoControllerAcceptanceWebClientTest {
                 .expectStatus().isNotFound(); // ajusta si tu controlador devuelve otro código
     }
 
-    @Test
-    @DisplayName("GET /productos devuelve 200 y JSON")
-    void listarProductos() {
-        webTestClient.get()
-                .uri("/productos")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
-                .expectBody()
-                .jsonPath("$").isArray();
-    }
-
-    @Test
-    @DisplayName("GET /productos/{id}/descuento/{porcentaje} aplica descuento sobre un producto existente")
-    void aplicarDescuento() {
-        // 1. crear el producto sobre el que vamos a aplicar descuento
-        ProductoInsertOrUpdate body = new ProductoInsertOrUpdate();
-        body.setNombre("Portátil");
-        body.setPrecio(1000.0);
-
-        ProductoView creado =
-                webTestClient.post()
-                        .uri("/productos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(body)
-                        .exchange()
-                        .expectStatus().isOk()
-                        .expectBody(ProductoView.class)
-                        .returnResult()
-                        .getResponseBody();
-
-        assertThat(creado).isNotNull();
-        Long id = creado.getId();
-        assertThat(id).isNotNull();
-
-        // 2. aplicar el descuento al id real (no al 5 fijo)
-        webTestClient.get()
-                .uri("/productos/{id}/descuento/{porcentaje}", id, 25)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.idProducto").isEqualTo(id.intValue())
-                // no sabemos exactamente la fórmula, así que solo comprobamos que viene el campo
-                .jsonPath("$.precioFinal").isNumber()
-                .jsonPath("$.precioFinal").isEqualTo(750.0);
-
-    }
 }

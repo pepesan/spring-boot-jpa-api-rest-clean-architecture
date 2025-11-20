@@ -48,9 +48,11 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductoView> crear(@Valid @RequestBody ProductoInsertOrUpdateDTO producto) {
+    public ResponseEntity<ProductoView> crear(
+            @Valid @RequestBody ProductoInsertOrUpdateDTO producto) {
         // lo suyo sería hacer un mapper
-        ProductoInsertOrUpdate productoInsertOrUpdate = new ProductoInsertOrUpdate();
+        ProductoInsertOrUpdate productoInsertOrUpdate
+                = new ProductoInsertOrUpdate();
         productoInsertOrUpdate.setNombre(producto.getNombre());
         productoInsertOrUpdate.setPrecio(producto.getPrecio());
         return ResponseEntity.ok(addProducto.add(productoInsertOrUpdate));

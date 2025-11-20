@@ -28,16 +28,29 @@ class ProductoControllerAcceptanceTest {
     }
 
     @Test
+    @DisplayName("GET /productos devuelve 200 y JSON")
+    void listarProductos() {
+        // When
+        ResponseEntity<String> response =
+                restTemplate.getForEntity(baseUrl(), String.class);
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getHeaders().getContentType()).isNotNull();
+        assertThat(response.getHeaders().getContentType().toString())
+                .startsWith("application/json");
+    }
+
+    @Test
     @DisplayName("POST /productos seguido de GET /productos/{id} devuelve lo creado")
     void crearYLuegoObtener() {
         // 1. Creamos el producto
         ProductoInsertOrUpdate body = new ProductoInsertOrUpdate();
         body.setNombre("Monitor");
         body.setPrecio(120.0);
-
+        // When
         ResponseEntity<ProductoView> createResponse =
                 restTemplate.postForEntity(baseUrl(), body, ProductoView.class);
-
+        // Then
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         ProductoView creado = createResponse.getBody();
         assertThat(creado).isNotNull();
@@ -80,7 +93,8 @@ class ProductoControllerAcceptanceTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<ProductoInsertOrUpdate> request = new HttpEntity<>(update, headers);
+        HttpEntity<ProductoInsertOrUpdate> request =
+                new HttpEntity<>(update, headers);
 
         ResponseEntity<ProductoView> updateResponse =
                 restTemplate.exchange(baseUrl() + "/" + id,
@@ -123,17 +137,7 @@ class ProductoControllerAcceptanceTest {
         // depende de cómo tengas manejadas las excepciones
     }
 
-    @Test
-    @DisplayName("GET /productos devuelve 200 y JSON")
-    void listarProductos() {
-        ResponseEntity<String> response =
-                restTemplate.getForEntity(baseUrl(), String.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getHeaders().getContentType()).isNotNull();
-        assertThat(response.getHeaders().getContentType().toString())
-                .startsWith("application/json");
-    }
 
     @Test
     @DisplayName("GET /productos/{id} devuelve el producto correspondiente")

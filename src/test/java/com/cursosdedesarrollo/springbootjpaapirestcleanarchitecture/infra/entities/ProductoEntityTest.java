@@ -35,6 +35,7 @@ class ProductoEntityTest {
         // Verificamos que se guardó en BD
         Optional<ProductoEntity> enBD = repository.findById(guardado.getId());
         assertTrue(enBD.isPresent());
+        assertNotNull(enBD.get().getId(), "El ID debe ser generado automáticamente");
         assertEquals("Teclado", enBD.get().getNombre());
         assertEquals(25.5, enBD.get().getPrecio(), 1e-9);
     }
@@ -62,7 +63,8 @@ class ProductoEntityTest {
     @Test
     @DisplayName("Actualizar un producto modifica los datos en BD")
     void update_modificaDatos() {
-        ProductoEntity producto = repository.save(new ProductoEntity(null, "Ratón", 15.0));
+        ProductoEntity producto =
+                repository.save(new ProductoEntity(null, "Ratón", 15.0));
 
         producto.setNombre("Ratón gamer");
         producto.setPrecio(20.0);
@@ -80,7 +82,8 @@ class ProductoEntityTest {
     @Test
     @DisplayName("deleteById elimina correctamente un producto")
     void deleteById_eliminaCorrectamente() {
-        ProductoEntity producto = repository.save(new ProductoEntity(null, "Auriculares", 30.0));
+        ProductoEntity producto =
+                repository.save(new ProductoEntity(null, "Auriculares", 30.0));
         Long id = producto.getId();
 
         assertTrue(repository.existsById(id));
